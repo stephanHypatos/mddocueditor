@@ -32,25 +32,7 @@ if not GITHUB_TOKEN or not REPO:
     )
     st.stop()
 
-# ------------------------------------------------
-# 🔎 ADD CONNECTION TEST RIGHT HERE
-# ------------------------------------------------
 
-with st.expander("🔎 GitHub connection test", expanded=True):
-    try:
-        me = gh_request("GET", f"{API}/user").json()
-        st.success(f"Authenticated as: {me.get('login')}")
-
-        repo_info = gh_request("GET", f"{API}/repos/{REPO}").json()
-        st.success(f"Repo access OK: {repo_info.get('full_name')}")
-
-        ref = gh_request("GET", f"{API}/repos/{REPO}/git/ref/heads/{BRANCH}").json()
-        st.success(f"Branch OK: {BRANCH}")
-    except Exception as e:
-        st.error(str(e))
-        st.stop()
-
-# ------------------------------------------------
 
 API = "https://api.github.com"
 HEADERS = {
@@ -154,6 +136,25 @@ st.caption(f"Repo: `{REPO}` · Branch: `{BRANCH}`")
 def cached_tree():
     return list_tree_recursive()
 
+# ------------------------------------------------
+# 🔎 ADD CONNECTION TEST RIGHT HERE
+# ------------------------------------------------
+
+with st.expander("🔎 GitHub connection test", expanded=True):
+    try:
+        me = gh_request("GET", f"{API}/user").json()
+        st.success(f"Authenticated as: {me.get('login')}")
+
+        repo_info = gh_request("GET", f"{API}/repos/{REPO}").json()
+        st.success(f"Repo access OK: {repo_info.get('full_name')}")
+
+        ref = gh_request("GET", f"{API}/repos/{REPO}/git/ref/heads/{BRANCH}").json()
+        st.success(f"Branch OK: {BRANCH}")
+    except Exception as e:
+        st.error(str(e))
+        st.stop()
+
+# ------------------------------------------------
 
 tree = cached_tree()
 
